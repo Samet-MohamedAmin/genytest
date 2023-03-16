@@ -1,0 +1,9 @@
+github.com/approvals/go-approval-tests v0.0.0-20220530063708-32d5677069bd h1:8j7sBEy0h6+Bvr0AeKHIHCsmzCzWGXAQweA7k+uiRYk=
+github.com/approvals/go-approval-tests v0.0.0-20220530063708-32d5677069bd/go.mod h1:PJOqSY8IofNv3heAD6k8E7EfFS6okiSS9bSAasaAUME=
+github.com/avito-tech/go-mutesting v0.0.0-20230222222326-d13c9c375b57/go.mod h1:K2/8SkYyU73+lG2+29b23qtqQsZMOoMZ3T3iy3lGPFk=
+golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/tools v0.6.0 h1:BOw41kyTf3PuCW1pVQf8+Cyg8pMlkYB1oo9iJ6D/lKM=
+golang.org/x/tools v0.6.0/go.mod h1:Xwgl3UAJ/d3gWutnCtw505GrjyAbvKui8lOU390QaIU=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
+gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
