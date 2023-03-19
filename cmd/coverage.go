@@ -39,8 +39,6 @@ func GetTestCoverage() float64 {
 		log.Fatalf(err.Error())
 	}
 
-	fmt.Println(coveragePercent)
-
 	command = []string{
 		"go",
 		"tool",

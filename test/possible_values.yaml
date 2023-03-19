@@ -1,20 +1,38 @@
-input:
+name:
   type: int
-  possibleValues:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 6
-    - 5
-    - 15
-    - 0
-    - 1
-    - 5
-    - 7
-    - 8
-    - 9
-    - 13
-    - 10
-    - 12
-    - 20
+  values:
+    static:
+      - Aged Brie
+      - Sulfuras, Hand of Ragnaros
+      - Backstage passes to a TAFKAL80ETC concert
+      - blaaaaa
+sellIn:
+  type: int
+  values:
+    static:
+      - 11
+      - 10
+      - 9
+      - 6
+      - 5
+      - 7
+      - -1
+      - -2
+      - 0
+      - 1
+    ranges: []
+quality:
+  type: int
+  values:
+    static:
+      - 0
+      - 1
+      - 2
+      - -1
+      - 50
+      - 49
+      - 48
+      - 47
+      - 51
+      - 52
+    ranges: []

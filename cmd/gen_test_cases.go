@@ -2,64 +2,19 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"reflect"
 	"text/template"
-
-	"gopkg.in/yaml.v3"
 )
 
 const (
-	recievedFile = path + "/example_test.TestBla.received.txt"
-	approvedFile = path + "/example_test.TestBla.approved.txt"
+	recievedFile          = path + "/gildedrose_test.TestApprovalUpdateQuality.received.txt"
+	approvedFile          = path + "/gildedrose_test.TestApprovalUpdateQuality.approved.txt"
+	testCasesTemplateFile = "test_cases.yaml.tpl"
+	testCasesOutputFile   = path + "/test_cases.yaml"
 )
-
-type combo map[string]string
-
-type testTemplate struct {
-	Id     string `yaml:"id"`
-	Input  int    `yaml:"input"`
-	Output int    `Yaml:"output"`
-}
-
-type possibleValue struct {
-	Type           string   `yaml:"type"`
-	PossibleValues []string `yaml:"possibleValues"`
-}
-
-type valuesByKey map[string]possibleValue
-
-func GetPossibleValues() valuesByKey {
-	filename, _ := filepath.Abs(possibleValuesFile)
-	yamlFile, err := ioutil.ReadFile(filename)
-
-	if err != nil {
-		panic(err)
-	}
-
-	var valuesMap valuesByKey
-
-	err = yaml.Unmarshal(yamlFile, &valuesMap)
-	if err != nil {
-		panic(err)
-	}
-
-	return valuesMap
-}
-
-func getCombos(vmap valuesByKey) (output []combo) {
-	for key, value := range vmap {
-		for _, pv := range value.PossibleValues {
-			item := map[string]string{
-				key: pv,
-			}
-			output = append(output, item)
-		}
-	}
-	return
-}
 
 func cleanFile(fo *os.File) {
 	if err := fo.Truncate(0); err != nil {
@@ -102,7 +57,16 @@ func updateApproved() {
 	runCommand(command, false)
 }
 
-func GenTestCasesFile(pv valuesByKey, getValue func() float64) {
+func verifyDuplicate(combos []Combo, c Combo) bool {
+	for _, combo := range combos {
+		if reflect.DeepEqual(combo, c) {
+			return true
+		}
+	}
+	return false
+}
+
+func GenTestCasesFile(allCombos []Combo, finalCombos []Combo, getValue func() float64) []Combo {
 	t, err := template.ParseFiles(testCasesTemplateFile)
 	if err != nil {
 		panic(err)
@@ -121,35 +85,44 @@ func GenTestCasesFile(pv valuesByKey, getValue func() float64) {
 		}
 	}()
 
-	allCombos := getCombos(pv)
-	oldValue := float64(0)
+	var oldValue, value float64 = 0, 0
 
-	finalCombos := []combo{}
+	comobosInitiliazed := len(finalCombos) != 0
+	if comobosInitiliazed {
+		if err = t.Execute(fo, finalCombos); err != nil {
+			panic(err)
+		}
+		updateApproved()
+		oldValue = getValue()
+	}
 
 	for _, c := range allCombos {
+		if comobosInitiliazed && verifyDuplicate(finalCombos, c) {
+			continue
+		}
 		tempCombos := append(finalCombos, c)
 		if err = t.Execute(fo, tempCombos); err != nil {
 			panic(err)
 		}
-
 		updateApproved()
-		value := getValue()
+
+		value = getValue()
 		if oldValue < value {
 			finalCombos = tempCombos
 			oldValue = value
-			fmt.Println("--> added combo")
-			fmt.Println(c)
-			fmt.Println("------------")
 		}
 		// time.Sleep(2 * time.Second)
 		log.Println("----------------------> percent = ", value)
 		cleanFile(fo)
-		if value == float64(100) {
+		if value == 100 {
 			break
 		}
 	}
+
+	updateApproved()
 	if err = t.Execute(fo, finalCombos); err != nil {
 		panic(err)
 	}
 
+	return finalCombos
 }

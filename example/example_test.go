@@ -15,6 +15,7 @@ import (
 type testTemplate struct {
 	Id     string `yaml:"id"`
 	Input  int    `yaml:"input"`
+	Bla    int    `yaml:"bla"`
 	Output int    `Yaml:"output"`
 }
 
@@ -49,7 +50,7 @@ func funcName() string {
 func Transform(testCases any) string {
 	tc := testCases.(testTemplate)
 
-	tc.Output = example.Bla(tc.Input)
+	tc.Output = example.Bla(tc.Input, tc.Bla)
 
 	output, err := yaml.Marshal([]testTemplate{tc})
 	if err != nil {

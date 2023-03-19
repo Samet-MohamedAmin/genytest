@@ -8,12 +8,10 @@ import (
 )
 
 const (
-	path                  = "../example"
-	coverProfile          = "coverage.out"
-	htmlPage              = "bla.html"
-	possibleValuesFile    = "possible_values.yaml"
-	testCasesTemplateFile = "test_cases.yaml.tpl"
-	testCasesOutputFile   = path + "/test_cases.yaml"
+	path               = "/var/home/mohamedamin/Desktop/test/GildedRose-Refactoring-Kata/go/gildedrose"
+	coverProfile       = "coverage.out"
+	htmlPage           = "bla.html"
+	possibleValuesFile = "possible_values.yaml"
 )
 
 var (
@@ -21,8 +19,12 @@ var (
 	goMutestingBin = home + "/go/bin/go-mutesting"
 )
 
+type set map[string]any
+
 func runCommand(command []string, skipError bool) string {
 	cmd := exec.Command(command[0], command[1:]...)
+
+	cmd.Dir = path
 
 	var stdBuffer bytes.Buffer
 	mw := io.MultiWriter(&stdBuffer) //, os.Stdout)
@@ -35,4 +37,15 @@ func runCommand(command []string, skipError bool) string {
 	}
 
 	return stdBuffer.String()
+}
+
+func (s set) add(item string) {
+	s[item] = nil
+}
+
+func (s set) getItems() (items []string) {
+	for key := range s {
+		items = append(items, key)
+	}
+	return
 }
