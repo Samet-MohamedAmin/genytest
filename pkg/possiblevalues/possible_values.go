@@ -60,12 +60,15 @@ func unmarshalPossibleValues() (valuesMap map[string]PossibleValue) {
 	return valuesMap
 }
 
-func GetAllValues() (allValues map[string][]string, keys []string) {
+func GetAllValues() (map[string][]string, []string) {
 	vmap := unmarshalPossibleValues()
+
+	allValues := map[string][]string{}
+	keys := []string{}
 
 	for key, value := range vmap {
 		allValues[key] = value.GetAllPossibleValues()
 		keys = append(keys, key)
 	}
-	return
+	return allValues, keys
 }
