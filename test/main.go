@@ -2,19 +2,22 @@ package main
 
 import (
 	"fmt"
-	"genytest/cmd"
+	"genytest/pkg/combo"
+	"genytest/pkg/geny"
+	"genytest/scores"
 )
 
 func main() {
 
-	pv := cmd.UnmarshalPossibleValues()
+	allCombos := combo.Combos{}.GenCombos()
 
-	allCombos := cmd.GetCombos(pv)
+	combos := combo.Combos{}
 
-	combos := []cmd.Combo{}
+	// fmt.Println("---> Coverage")
+	// coverage := geny.Coverage{}
+	// combos = geny.GenTestCasesFile(allCombos, combos, coverage)
 
-	fmt.Println("---> Coverage")
-	combos = cmd.GenTestCasesFile(allCombos, combos, cmd.GetTestCoverage)
 	fmt.Println("---> Mutation")
-	cmd.GenTestCasesFile(allCombos, combos, cmd.GetMutationTestPercent)
+	mutation := scores.Mutation{}
+	geny.GenTestCasesFile(allCombos, combos, mutation)
 }
