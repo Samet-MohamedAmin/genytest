@@ -13,10 +13,10 @@ import (
 )
 
 type testTemplate struct {
-	Id     string `yaml:"id"`
-	Input  int    `yaml:"input"`
-	Bla    int    `yaml:"bla"`
-	Output int    `Yaml:"output"`
+	ComboHash string `yaml:"comboHash"`
+	Input     int    `yaml:"input"`
+	Bla       int    `yaml:"bla"`
+	Output    int    `Yaml:"output"`
 }
 
 const testCasesFile = "test_cases.yaml"

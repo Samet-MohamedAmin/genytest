@@ -1,6 +1,0 @@
-{{ range $key, $value := .}}
--
-  id: "{{/* $key */}}"
-  input: {{ $value.input }}
-  bla: {{ $value.bla }}
-{{ end }}

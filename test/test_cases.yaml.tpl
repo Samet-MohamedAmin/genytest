@@ -1,9 +1,6 @@
-{{ range $key, $value := .}}
+{{ range $value := .}}
 -
-  id: "{{/* $key */}}"
-  input:
-    -
-      name: {{ $value.name }}
-      sellIn: {{ $value.sellIn }}
-      quality: {{ $value.quality }}
+  comboHash: "{{ $value.Hash }}"
+  input: {{ $value.Items.input }}
+  bla: {{ $value.Items.bla }}
 {{ end }}
