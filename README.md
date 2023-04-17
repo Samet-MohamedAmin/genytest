@@ -86,10 +86,8 @@ That generates 484 test cases
 
   </summary>
 
-```log
-
+```bash
 [test]$ go run main.go
-
 ---> Mutation
 2023/04/17 19:46:10 scores[0] = 14.47
 2023/04/17 19:46:35 scores[483] = 100.00
@@ -139,7 +137,6 @@ That generates 484 test cases
 2023/04/17 20:01:07 ---------> marked usesless form 271 to 271
 2023/04/17 20:01:07 --------------------------------------------> calculated 100.00%
 ```
-
 </details>
 
 
@@ -155,8 +152,7 @@ That generates 484 test cases
   With basic maths it eliminates `13%` of test cases
   </summary>
 
-``` log
-
+``` logs
 2023/04/17 20:01:07 ------------------------------> start sequentialFilter
 --- individual socres
 2023/04/17 20:02:18 scores[1] = 14.47
