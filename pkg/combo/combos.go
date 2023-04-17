@@ -7,7 +7,7 @@ import (
 
 type Combos []*Combo
 
-func (cs Combos) CloneCombos() (dst []*Combo) {
+func (cs Combos) CloneCombos() (dst Combos) {
 	for _, c := range cs {
 		dst = append(dst, c.Clone())
 	}
@@ -32,27 +32,30 @@ func (cs Combos) VerifyDuplicate(c *Combo) bool {
 	return false
 }
 
-func createCombos(allValues map[string][]string, keys []string) (cs Combos) {
-	for _, pv := range allValues[keys[0]] {
-		combo := Combo{}
-		combo.Items = map[string]string{
-			keys[0]: pv,
-		}
-		cs = append(cs, &combo)
+func (cs *Combos) addToAllItems(key, value string) {
+	for _, combo := range *cs {
+		combo.Items[key] = value
 	}
-	return
 }
 
 func (cs Combos) combosCartesionProduct(allValues map[string][]string, keys []string) Combos {
-	combos := cs
+	combos := Combos{}
+
+	// create first values
+	for _, pv := range allValues[keys[0]] {
+		combo := Combo{}
+		combo.Items = map[string]string{keys[0]: pv}
+		combos = append(combos, &combo)
+	}
+
+	// cartesion product
+	// add value of each key to the existing items
 	for _, key := range keys[1:] {
 		oldCombos := combos
 		combos = Combos{}
 		for _, value := range allValues[key] {
 			newCombos := oldCombos.CloneCombos()
-			for _, combo := range newCombos {
-				combo.Items[key] = value
-			}
+			newCombos.addToAllItems(key, value)
 			combos = append(combos, newCombos...)
 		}
 	}
@@ -62,8 +65,6 @@ func (cs Combos) combosCartesionProduct(allValues map[string][]string, keys []st
 
 func (Combos) GenCombos() (cs Combos) {
 	allValues, keys := possiblevalues.GetAllValues()
-
-	cs = createCombos(allValues, keys)
 
 	cs = cs.combosCartesionProduct(allValues, keys)
 

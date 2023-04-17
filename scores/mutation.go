@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path"
 	"regexp"
 	"strconv"
 )
@@ -27,8 +28,7 @@ type Mutation struct {
 }
 
 func (Mutation) GetValue(subpath string) float64 {
-
-	args := append(mutationArgs, subpath+"/"+config.Path)
+	args := append(mutationArgs, path.Join(subpath, config.Path))
 
 	c := exec.Command(args[0], args[1:]...)
 	c.Dir = subpath

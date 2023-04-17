@@ -1,17 +1,32 @@
 
 -
-  comboHash: "f09ef42d04fe045d6c80be80dcb73e891fab6ae0"
-  input: 7
-  bla: 10
+  comboHash: "5dd2ec3fc48780b970003ce9d748432905fc0030"
+  input: 6
+  bla: 17
 
 -
-  comboHash: "244af34a895ee215090794e980cc793d44f45605"
+  comboHash: "bab2a3d9ad3bec6ab203f3a870377954a1e3e009"
   input: 9
+  bla: 17
+
+-
+  comboHash: "58c901cce49ab64ac64d57f8883fef61d5a101a7"
+  input: 10
+  bla: 17
+
+-
+  comboHash: "a173e523b5e49aabd4a78884c485dc0b0f219966"
+  input: 6
+  bla: 18
+
+-
+  comboHash: "cc5eeed99de8b9c894eb5cc20049ed093c7bfd61"
+  input: 6
   bla: 10
 
 -
-  comboHash: "85299079e1641b7b664b8e3b27a2492c6ae5bd7a"
-  input: 1
+  comboHash: "30f041e52d293cc3d1accebf848ca3dc51f14214"
+  input: 0
   bla: 10
 
 -
@@ -20,32 +35,7 @@
   bla: 10
 
 -
-  comboHash: "bfc521f25ede516b499689ca7f73268caa97e3a1"
+  comboHash: "33ab6bbcbc76cc6251da49133e0a3eecca8e3b88"
   input: 5
   bla: 10
-
--
-  comboHash: "c1c7d36b4b3ba3e117b17eab7d6556e9bbc4c490"
-  input: 10
-  bla: 10
-
--
-  comboHash: "e5c495321ba969a3c1c98d54a9f879243a5794a3"
-  input: 7
-  bla: 11
-
--
-  comboHash: "8da7ad0e5db08ce4db8cea1161ec68d938bc47f6"
-  input: 7
-  bla: 18
-
--
-  comboHash: "e6bff784fefe60aed11fd05fa338e0befc320f6e"
-  input: 7
-  bla: 16
-
--
-  comboHash: "256a82778ca93f9dd18e2e5363049012ff1ff456"
-  input: 7
-  bla: 17
 

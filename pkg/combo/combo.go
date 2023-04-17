@@ -6,8 +6,9 @@ import (
 )
 
 type Combo struct {
-	Items map[string]string `yaml:"items"`
-	Hash  string            `yaml:"hash"`
+	Items   map[string]string `yaml:"items"`
+	Hash    string            `yaml:"hash"`
+	Useless bool
 }
 
 func (c Combo) String() (output string) {

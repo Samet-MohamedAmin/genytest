@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"genytest/pkg/combo"
-	"genytest/pkg/geny"
+	"genytest/pkg/geny/v2"
 	"genytest/scores"
 )
 
-func main() {
+func testBla() {
 
 	allCombos := combo.Combos{}.GenCombos()
 
@@ -20,4 +20,9 @@ func main() {
 	fmt.Println("---> Mutation")
 	mutation := scores.Mutation{}
 	geny.GenTestCasesFile(allCombos, combos, mutation)
+}
+
+func main() {
+
+	testBla()
 }

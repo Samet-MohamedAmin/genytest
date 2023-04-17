@@ -34,14 +34,6 @@ func DeleteFile(filename string) error {
 	return nil
 }
 
-func MoveFile(source, destination string) error {
-	err := os.Rename(source, destination)
-	if err != nil {
-		panic(err)
-	}
-	return nil
-}
-
 func CleanDir(dir string) {
 	err := os.RemoveAll(dir)
 	if err != nil {

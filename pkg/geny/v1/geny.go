@@ -9,24 +9,55 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path"
 	"sync"
 	"text/template"
 )
 
 func updateApproved(p string) {
 
-	utilities.DeleteFile(p + "/" + config.RecievedFile)
-	utilities.DeleteFile(p + "/" + config.ApprovedFile)
+	utilities.DeleteFile(path.Join(p, config.RecievedFile))
+	utilities.DeleteFile(path.Join(p, config.ApprovedFile))
 
-	c := exec.Command("go", "test", p+"/"+config.Path)
+	c := exec.Command("go", "test", path.Join(p, config.Path))
 	c.Dir = p
 	utilities.RunCommand(c, true)
 
-	utilities.MoveFile(p+"/"+config.Path+"/"+config.RecievedFile, p+"/"+config.Path+"/"+config.ApprovedFile)
+	os.Rename(path.Join(p, config.Path, config.RecievedFile), path.Join(p, config.Path, config.ApprovedFile))
 }
 
-func doSubCombosThing(combos *combo.Combos, customTest scores.CustomTest, t *template.Template, indexJobs <-chan int, arrayChannel *[]float64, wg *sync.WaitGroup, maxIndex *utilities.Safeindex) {
+func writeTemplate(t *template.Template, pathFile string, data any) {
+
+	// open output file
+	fo, err := os.Create(pathFile)
+	if err != nil {
+		panic(err)
+	}
+
+	// close fo on exit and check for its returned error
+	defer func() {
+		if err := fo.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	if err := t.Execute(fo, data); err != nil {
+		panic(err)
+	}
+}
+
+func doSubCombosThing(
+	combos *combo.Combos,
+	customTest scores.CustomTest,
+	t *template.Template,
+	indexJobs <-chan int,
+	arrayChannel *[]float64,
+	wg *sync.WaitGroup,
+	maxIndex *utilities.Safeindex,
+	jobNumber int) {
 	defer wg.Done()
+
+	dir := utilities.CreateSandboxedEnv(fmt.Sprint(jobNumber))
 
 	for index := range indexJobs {
 		subCombos := (*combos)[:index+1]
@@ -36,25 +67,10 @@ func doSubCombosThing(combos *combo.Combos, customTest scores.CustomTest, t *tem
 			return
 		}
 
-		h := subCombos.GetSubCombosHash()
-		dir := utilities.CreateSandboxedEnv(h)
-
 		// open output file
-		fo, err := os.Create(dir + "/" + config.Path + "/" + config.TestCasesOutputFile)
-		if err != nil {
-			panic(err)
-		}
+		pathFile := path.Join(dir, config.Path, config.TestCasesOutputFile)
+		writeTemplate(t, pathFile, subCombos)
 
-		// close fo on exit and check for its returned error
-		defer func() {
-			if err := fo.Close(); err != nil {
-				panic(err)
-			}
-		}()
-
-		if err := t.Execute(fo, subCombos); err != nil {
-			panic(err)
-		}
 		updateApproved(dir)
 
 		if (*arrayChannel)[maxIndex.Value()] == 100 && index > maxIndex.Value() {
@@ -81,35 +97,21 @@ func GenTestCasesFile(allCombos combo.Combos, finalCombos combo.Combos, customTe
 		panic(err)
 	}
 
-	comobosInitiliazed := len(finalCombos) != 0
-	if comobosInitiliazed {
-		fmt.Println("comobosInitiliazed = true")
-		// if err = t.Execute(fo, finalCombos); err != nil {
-		// 	panic(err)
-		// }
-		// updateApproved(path)
-		// oldValue = GetValue()
-	}
+	// TODO: check if finalComobos is initiliazed
 
 	var wg sync.WaitGroup
 	utilities.CleanDir(config.BaseTmpDir)
 	arrayChannel := &[]float64{}
 
-	// TODO: use channel
 	maxIndex := utilities.Safeindex{}
 
-	const numWorkers = 10
+	const numWorkers = 6
 	// Create a buffered channel with a capacity of numWorkers
 	indexJobs := make(chan int, numWorkers)
 
-	// allCombosWithoutPointer := []combo.Combo{}
-	// for _, c := range allCombos {
-	// 	allCombosWithoutPointer = append(allCombosWithoutPointer, *c)
-	// }
-
 	for i := 1; i <= numWorkers; i++ {
 		wg.Add(1)
-		go doSubCombosThing(&allCombos, customTest, t, indexJobs, arrayChannel, &wg, &maxIndex)
+		go doSubCombosThing(&allCombos, customTest, t, indexJobs, arrayChannel, &wg, &maxIndex, i)
 	}
 
 	// Send the jobs to the workers
@@ -135,24 +137,8 @@ func GenTestCasesFile(allCombos combo.Combos, finalCombos combo.Combos, customTe
 		oldResult = newResult
 	}
 
-	// updateApproved(path)
-
-	// open output file
-	fo, err := os.Create(config.BasePath + "/" + config.Path + "/" + config.TestCasesOutputFile)
-	if err != nil {
-		panic(err)
-	}
-
-	// close fo on exit and check for its returned error
-	defer func() {
-		if err := fo.Close(); err != nil {
-			panic(err)
-		}
-	}()
-
-	if err := t.Execute(fo, finalCombos); err != nil {
-		panic(err)
-	}
+	outputPath := path.Join(config.BasePath, config.Path, config.TestCasesOutputFile)
+	writeTemplate(t, outputPath, finalCombos)
 
 	return finalCombos
 }

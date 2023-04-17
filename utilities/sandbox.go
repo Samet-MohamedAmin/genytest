@@ -4,6 +4,7 @@ import (
 	"genytest/config"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"regexp"
 )
@@ -22,7 +23,7 @@ func getSrcFiles(path string) []string {
 }
 
 func CreateSandboxedEnv(h string) (dir string) {
-	dir = config.BaseTmpDir + "/" + h
+	dir = path.Join(config.BaseTmpDir, h)
 
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 		panic(err)

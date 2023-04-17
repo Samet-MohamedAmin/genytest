@@ -1,0 +1,9 @@
+{{ range $value := .}}
+-
+  comboHash: "{{ $value.Hash }}"
+  input:
+    -
+        name: {{ $value.Items.name }}
+        sellIn: {{ $value.Items.sellIn }}
+        quality: {{ $value.Items.quality }}
+{{ end }}
