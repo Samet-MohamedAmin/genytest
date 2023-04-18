@@ -1,17 +1,16 @@
-# Geny Test
-The tool that magically generates test cases to ensure `1.0` [mutation score](https://www.guru99.com/mutation-testing.html#-mutation-score).
+# GenyTest
+Automatic Test Case Generator for 1.0 Mutation Score [mutation score](https://www.guru99.com/mutation-testing.html#-mutation-score).
 
-The tool can be configured to work with any test that have incremental score such as coverage tests
+GenyTest is a powerful tool that automates the generation of test cases, aiming to achieve a perfect `1.0` mutation score. Designed to work with tests that have incremental scores, such as coverage tests, Geny Test relies on two core technologies:
 
-
-The tool is based on 2 technologies:
 - [approval tests](https://approvaltests.com/)
 - [mutation tests](https://en.wikipedia.org/wiki/Mutation_testing)
 
+Note that this tool can be used with any incremental score test such as coverage tests.
 
 # Why ?
-Before dealing with a complicated legacy code, we need to ensure that we have the required tests that prevents regressions.
-Coverage tests are not enough. With `1.0` mutation score we can modify the code without fear of hidden regression of a code that we don't know.
+When dealing with complex legacy code, it's crucial to have comprehensive tests in place to prevent regressions. Coverage tests alone are insufficient. A 1.0 mutation score allows for code modification without the fear of hidden regressions in unfamiliar code.
+Automatically generating test cases can be challenging due to the high number of possible test scenarios and the computational resources required. Geny Test tackles these challenges with an efficient parallel strategy and a powerful algorithm.
 
 A function with 4 parameters and 5 possible values each parameter will have `5 ** 4 = 225` testcases.
 And the number of tests can reach thounds easilly if possible values are more than 5.
